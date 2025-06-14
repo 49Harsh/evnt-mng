@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 
 const Navbar: React.FC = () => {
@@ -26,10 +27,12 @@ const Navbar: React.FC = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              <img
-                className="h-14 w-auto"
+              <Image
                 src="/logo-mm.gif"
                 alt="EventMaster Logo"
+                width={56}
+                height={56}
+                className="h-14 w-auto"
               />
               <span className="ml-2 text-xl font-bold text-gray-800">EventMaster</span>
             </Link>
