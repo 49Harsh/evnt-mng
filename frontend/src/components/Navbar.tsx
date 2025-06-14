@@ -1,4 +1,3 @@
-// components/Navbar.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -27,11 +26,12 @@ const Navbar: React.FC = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              <div className="w-8 h-8 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center">
-                <div className="w-4 h-4 bg-white rounded-full relative">
-                  <div className="absolute top-1 left-1 w-2 h-2 bg-gradient-to-r from-orange-400 to-red-500 rounded-full"></div>
-                </div>
-              </div>
+              <img
+                className="h-14 w-auto"
+                src="/logo-mm.gif"
+                alt="EventMaster Logo"
+              />
+              <span className="ml-2 text-xl font-bold text-gray-800">EventMaster</span>
             </Link>
           </div>
 
