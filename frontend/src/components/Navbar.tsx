@@ -11,13 +11,11 @@ const Navbar: React.FC = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
   const navItems = [
     { name: 'Home', href: '/' },
-    { name: 'Service', href: '/service' },
+    { name: 'Services', href: '/services' },
     { name: 'About Us', href: '/about' },
-    { name: 'Event', href: '/event' },
-    { name: 'Our Team', href: '/team' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   return (
