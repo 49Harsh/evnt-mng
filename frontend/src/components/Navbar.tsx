@@ -26,13 +26,13 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center">
-              <Image
+            <Link href="/" className="flex items-center">              <Image
                 src="/logo-mm.gif"
                 alt="EventMaster Logo"
                 width={56}
                 height={56}
                 className="h-14 w-auto"
+                unoptimized
               />
               <span className="ml-2 text-xl font-bold text-gray-800">EventMaster</span>
             </Link>
