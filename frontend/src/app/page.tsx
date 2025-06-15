@@ -7,9 +7,9 @@ export default function Home(): ReactElement {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section fix - remove any direct Image component usage */}
-      <section className="relative h-[90vh] flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+      <section className="relative h-[90vh] flex items-center justify-center bg-white ">
         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 "></div>
         
         {/* Background pattern */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.03\'%3E%3Ccircle cx=\'30\' cy=\'30\' r=\'2\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
@@ -20,14 +20,14 @@ export default function Home(): ReactElement {
             {/* Left side - Text content */}
             <div className="text-white space-y-8">
               <div className="space-y-6">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight">
                   Sparkle & Shine{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500">
                     A Night of Glitz and Glamour
                   </span>
                 </h1>
                 
-                <p className="text-lg sm:text-xl text-gray-300 leading-relaxed max-w-2xl">
+                <p className="text-lg sm:text-xl text-gray-700 leading-relaxed max-w-2xl">
                   Elevate Your Evening with an Unforgettable Experience
                 </p>
               </div>
@@ -83,9 +83,9 @@ export default function Home(): ReactElement {
       </section>
 
       {/* Featured Services Section - Dark theme */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-white">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-gray-900">
             Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500">Premium</span> Services
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -110,12 +110,12 @@ export default function Home(): ReactElement {
               }
             ].map((service, index) => (
               <div 
-                key={index}
-                className="bg-gray-800/50 p-8 rounded-xl backdrop-blur-sm border border-gray-700/50 hover:border-orange-500/50 transition-all duration-300 hover:transform hover:-translate-y-2 group"
+              key={index}
+              className="bg-gray-50 p-8 rounded-xl backdrop-blur-sm border border-gray-200 hover:border-orange-500/50 transition-all duration-300 hover:transform hover:-translate-y-2 group"
               >
                 <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">{service.icon}</div>
-                <h3 className="text-xl font-semibold mb-3 text-white">{service.title}</h3>
-                <p className="text-gray-300">{service.description}</p>
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">{service.title}</h3>
+                <p className="text-gray-600">{service.description}</p>
                 <div className={`mt-4 w-full h-1 bg-gradient-to-r ${service.gradient} rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-300`}></div>
               </div>
             ))}
@@ -124,9 +124,9 @@ export default function Home(): ReactElement {
       </section>
 
       {/* Why Choose Us Section - Dark theme */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-white">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-gray-900">
             Why Choose <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500">Sparkle & Shine</span>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -154,8 +154,8 @@ export default function Home(): ReactElement {
             ].map((feature, index) => (
               <div key={index} className="text-center group hover:transform hover:scale-105 transition-all duration-300">
                 <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">{feature.icon}</div>
-                <h3 className="text-xl font-semibold mb-3 text-white">{feature.title}</h3>
-                <p className="text-gray-400">{feature.description}</p>
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">{feature.title}</h3>
+                <p className="text-gray-600">{feature.description}</p>
               </div>
             ))}
           </div>
