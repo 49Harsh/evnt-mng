@@ -33,21 +33,22 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/logo-mm.gif"
-                alt="EventMaster Logo"
-                width={56}
-                height={56}
-                className="h-14 w-auto"
-                unoptimized
-              />
-              <div>
-                <span className="ml-2 text-xl font-bold text-gray-800">MilanManch <br/> Celebration</span>
-              </div>
-            </Link>
-          </div>
+         <div className="flex-shrink-0">
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logo-mm.gif"
+              alt="EventMaster Logo"
+              width={56}
+              height={56}
+              className="h-14 w-auto"
+              unoptimized
+            />
+            <div className="ml-2">
+              <div className="text-xl font-bold text-gray-800">MilanManch</div>
+              <div className="text-sm text-gray-600">Celebration</div>
+            </div>
+          </Link>
+        </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">

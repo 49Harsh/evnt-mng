@@ -1,15 +1,15 @@
 'use client';
 
-import { type ReactElement, useState, useEffect } from 'react';
+import { type ReactElement, useState, useEffect, useMemo } from 'react';
 import Link from "next/link";
 
 export default function Home(): ReactElement {
-  const textData = [
+  const textData = useMemo(() => [
     "Welcome to Milan Manch Celebration",
     "Crafting moments, Creating Memories - Your Event, Our Expertise!",
     "Memorable Events Start with us.",
     "Host Event that matters"
-  ];
+  ], []);
 
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');

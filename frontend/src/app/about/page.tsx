@@ -20,25 +20,25 @@ export default function About() {
             <div>
               <h2 className="text-3xl font-bold mb-6">Our Story</h2>
               <p className="text-gray-600 mb-4">
-                MilanManch Celebration Pvt. Ltd. began with a heartfelt dream—to make every event not just beautiful, but truly unforgettable. From the very beginning, our goal has been simple: to offer a one-stop solution for everything you need to make your event perfect. Whether it's a wedding, corporate event, birthday, or cultural function, we take care of it all—so you can relax and enjoy your special moments.
+                MilanManch Celebration Pvt. Ltd. began with a heartfelt dream&#8212;to make every event not just beautiful, but truly unforgettable. From the very beginning, our goal has been simple: to offer a one-stop solution for everything you need to make your event perfect. Whether it&apos;s a wedding, corporate event, birthday, or cultural function, we take care of it all&#8212;so you can relax and enjoy your special moments.
               </p>
               <p className="text-gray-600 mb-4">
                 Our journey started small, with a few local events and a big vision. But word spread quickly. People loved the way we handled every detail with care, how we brought ideas to life with creativity, and how we treated every celebration like our own. What sets us apart is not just the services we offer, but the emotion and energy we bring to every event.
               </p>
               <p className="text-gray-600 mb-4">
-                At MilanManch, we believe every client has a unique story—and every celebration should reflect that. We listen closely, understand your vision, and then work behind the scenes to make it real. From venue booking, decorations, catering, and sound to lights, logistics, and personalized themes—we handle everything under one roof.
+                At MilanManch, we believe every client has a unique story&#8212;and every celebration should reflect that. We listen closely, understand your vision, and then work behind the scenes to make it real. From venue booking, decorations, catering, and sound to lights, logistics, and personalized themes&#8212;we handle everything under one roof.
               </p>
               <p className="text-gray-600 mb-4">
-                Our team doesn’t work with a “one-size-fits-all” mindset. We take time to understand your needs, your style, and your expectations. Whether it’s a small, intimate gathering or a grand celebration, we make sure every detail is perfect. And the best part? You don’t have to run around managing multiple vendors—we bring everything together in one smooth experience.
+                Our team doesn&apos;t work with a &quot;one-size-fits-all&quot; mindset. We take time to understand your needs, your style, and your expectations. Whether it&apos;s a small, intimate gathering or a grand celebration, we make sure every detail is perfect. And the best part? You don&apos;t have to run around managing multiple vendors&#8212;we bring everything together in one smooth experience.
               </p>
               <p className="text-gray-600 mb-4">
-                Clients often tell us that working with MilanManch feels like planning an event with family. And honestly, that’s what we aim for. We’re not just event planners—we’re partners in your joy.
+                Clients often tell us that working with MilanManch feels like planning an event with family. And honestly, that&apos;s what we aim for. We&apos;re not just event planners&#8212;we&apos;re partners in your joy.
               </p>
               <p className="text-gray-600 mb-4">
-                As we continue to grow, our mission remains the same: to make celebrations stress-free, meaningful, and magical. We believe that memories are made in the little things—warm welcomes, seamless flow, and moments of pure happiness.
+                As we continue to grow, our mission remains the same: to make celebrations stress-free, meaningful, and magical. We believe that memories are made in the little things&#8212;warm welcomes, seamless flow, and moments of pure happiness.
               </p>
               <p className="text-gray-600">
-                So when you're ready to celebrate life’s biggest moments, remember this—MilanManch is here to take care of everything, all in one place, just the way you dreamed it.
+                So when you&apos;re ready to celebrate life&apos;s biggest moments, remember this&#8212;MilanManch is here to take care of everything, all in one place, just the way you dreamed it.
               </p>
             </div>
           </div>
@@ -52,7 +52,7 @@ export default function About() {
             <div className="bg-white p-8 rounded-lg shadow-md">
               <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
               <p className="text-gray-600">
-                At MilanManch Celebration Pvt. Ltd., our mission is simple yet powerful: to make every event a joyful, stress-free, and unforgettable experience. We understand how special these moments are—whether it's a wedding, a birthday, a corporate event, or any other occasion—and we believe they deserve nothing less than perfection.
+                At MilanManch Celebration Pvt. Ltd., our mission is simple yet powerful: to make every event a joyful, stress-free, and unforgettable experience. We understand how special these moments are—whether it&apos;s a wedding, a birthday, a corporate event, or any other occasion—and we believe they deserve nothing less than perfection.
               </p>
               <p className="text-gray-600 mt-4">
                 Our dream is to provide a one-stop solution for all your event needs, so you don’t have to worry about managing different vendors or running after last-minute arrangements. From venue selection and decoration to catering, entertainment, sound, lighting, and logistics—we take care of everything under one roof.
