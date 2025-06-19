@@ -25,6 +25,7 @@ const Navbar = () => {
     { name: 'Services', href: '/services' },
     { name: 'About Us', href: '/about' },
     { name: 'Contact', href: '/contact' },
+    { name: 'Become a Vendor', href: '/events' },
   ];
 
   return (
@@ -42,7 +43,9 @@ const Navbar = () => {
                 className="h-14 w-auto"
                 unoptimized
               />
-              <span className="ml-2 text-xl font-bold text-gray-800">EventMaster</span>
+              <div>
+                <span className="ml-2 text-xl font-bold text-gray-800">MilanManch <br/> Celebration</span>
+              </div>
             </Link>
           </div>
 

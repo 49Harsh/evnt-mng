@@ -91,11 +91,12 @@ export default function Contact() {
 
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone Number
+                    Phone Number *
                   </label>
                   <input
                     type="tel"
                     id="phone"
+                    required
                     className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -104,10 +105,11 @@ export default function Contact() {
 
                 <div>
                   <label htmlFor="eventType" className="block text-sm font-medium text-gray-700 mb-1">
-                    Event Type
+                    Event Type *
                   </label>
                   <select
                     id="eventType"
+                    required
                     className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     value={formData.eventType}
                     onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
@@ -151,23 +153,23 @@ export default function Contact() {
                 <div className="space-y-4">
                   <div>
                     <h3 className="font-semibold mb-2">Address</h3>
-                    <p className="text-gray-600">123 Event Street</p>
-                    <p className="text-gray-600">Mumbai, Maharashtra 400001</p>
+                    <p className="text-gray-600">A12 Bansal Complex, 100 ft. hindi sansthan road, Near Khandari Crossing, </p>
+                    <p className="text-gray-600">Khandari, Agra - 282005</p>
                   </div>
                   <div>
                     <h3 className="font-semibold mb-2">Phone</h3>
-                    <p className="text-gray-600">+91 (123) 456-7890</p>
+                    <p className="text-gray-600">+91 6396429825</p>
                   </div>
                   <div>
                     <h3 className="font-semibold mb-2">Email</h3>
-                    <p className="text-gray-600">info@eventmaster.com</p>
+                    <p className="text-gray-600">manchmilan@gmail.com</p>
                   </div>
-                  <div>
+                  {/* <div>
                     <h3 className="font-semibold mb-2">Business Hours</h3>
                     <p className="text-gray-600">Monday - Friday: 9:00 AM - 6:00 PM</p>
                     <p className="text-gray-600">Saturday: 10:00 AM - 4:00 PM</p>
                     <p className="text-gray-600">Sunday: Closed</p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
