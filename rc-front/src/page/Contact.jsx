@@ -2,8 +2,11 @@
 
 import { useState, FormEvent } from "react";
 import React from "react";
+import api from '../api';
+import { useAuth } from '../context/AuthContext.jsx';
 
 export default function Contact() {
+  const { token } = useAuth();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,19 +21,25 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setSubmitMessage("Thank you for your message. We'll get back to you soon!");
+    setSubmitMessage("");
+    try {
+      await api.post('/api/contact', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setSubmitMessage("Thank you for your message. We'll get back to you soon!");
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        eventType: "",
+        message: "",
+      });
+    } catch (err) {
+      setSubmitMessage("Failed to send message. Please try again later.");
+    }
     setIsSubmitting(false);
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      eventType: "",
-      message: "",
-    });
   };
 
   return (

@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const cloudinary = require('cloudinary').v2;
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const contactRoutes = require('./routes/contact');
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)

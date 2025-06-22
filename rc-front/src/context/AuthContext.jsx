@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import React from 'react';
+import api from '../api';
 
 const AuthContext = createContext(null);
 
@@ -20,15 +21,9 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await response.json();
-      if (!response.ok) {
+      const response = await api.post('/api/auth/login', { email, password });
+      const data = response.data;
+      if (!response.status || response.status >= 400) {
         throw new Error(data.message);
       }
       setUser(data.user);
@@ -42,12 +37,9 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
-        method: 'POST',
-        body: userData,
-      });
-      const data = await response.json();
-      if (!response.ok) {
+      const response = await api.post('/api/auth/register', userData);
+      const data = response.data;
+      if (!response.status || response.status >= 400) {
         throw new Error(data.message);
       }
       setUser(data.user);
@@ -68,15 +60,13 @@ export const AuthProvider = ({ children }) => {
 
   const updateProfile = async (userData) => {
     try {
-      const response = await fetch('http://localhost:5000/api/users/profile', {
-        method: 'PUT',
+      const response = await api.put('/api/users/profile', userData, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
-        body: userData,
       });
-      const data = await response.json();
-      if (!response.ok) {
+      const data = response.data;
+      if (!response.status || response.status >= 400) {
         throw new Error(data.message);
       }
       setUser(data);
@@ -88,14 +78,13 @@ export const AuthProvider = ({ children }) => {
 
   const deleteAccount = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/users', {
-        method: 'DELETE',
+      const response = await api.delete('/api/users', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
-      if (!response.ok) {
-        const data = await response.json();
+      if (!response.status || response.status >= 400) {
+        const data = response.data;
         throw new Error(data.message);
       }
       logout();

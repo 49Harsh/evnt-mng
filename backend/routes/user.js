@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
-const auth = require('../middleware/auth');
+const { authenticate } = require('../middleware/auth');
 const User = require('../models/User');
 
 // Multer configuration
@@ -10,7 +10,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Get user profile
-router.get('/profile', auth, async (req, res) => {
+router.get('/profile', authenticate, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select('-password');
     if (!user) {
@@ -23,7 +23,7 @@ router.get('/profile', auth, async (req, res) => {
 });
 
 // Update user profile
-router.put('/profile', auth, upload.single('profileImage'), async (req, res) => {
+router.put('/profile', authenticate, upload.single('profileImage'), async (req, res) => {
   try {
     let user = await User.findById(req.user.userId);
     if (!user) {
@@ -62,7 +62,7 @@ router.put('/profile', auth, upload.single('profileImage'), async (req, res) => 
 });
 
 // Delete user
-router.delete('/', auth, async (req, res) => {
+router.delete('/', authenticate, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
     if (!user) {
