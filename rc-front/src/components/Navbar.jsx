@@ -1,16 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { user, logout } = useAuth();
   const navItems = [
     { name: 'Home', href: '/' },
     { name: 'Services', href: '/services' },
     { name: 'About Us', href: '/about' },
     { name: 'Contact', href: '/contact' },
     { name: 'Become a Vendor', href: '/become-vendor' },
-    { name: 'Login', href: '/login' },
-    { name: 'Register', href: '/register' },
   ];
 
   return (
@@ -45,6 +45,30 @@ const Navbar = () => {
                   {item.name}
                 </Link>
               ))}
+              {/* Auth section */}
+              {user ? (
+                <div className="flex items-center">
+                  {user.profileImage && (
+                    <img
+                      src={user.profileImage}
+                      alt={user.name}
+                      className="inline-block h-8 w-8 rounded-full object-cover mr-2 border border-orange-400 align-middle"
+                    />
+                  )}
+                  <span className="text-gray-700 font-semibold px-1 py-2 align-middle">{user.name}</span>
+                  <button
+                    onClick={logout}
+                    className="text-white bg-orange-500 hover:bg-orange-600 px-3 py-2 rounded-md text-sm font-medium ml-2"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <Link to="/login" className="text-gray-700 hover:text-orange-500 px-3 py-2 text-sm font-medium transition-colors duration-200">Login</Link>
+                  <Link to="/register" className="text-gray-700 hover:text-orange-500 px-3 py-2 text-sm font-medium transition-colors duration-200">Register</Link>
+                </>
+              )}
             </div>
           </div>
           {/* Mobile menu button */}
@@ -78,6 +102,23 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
+            {/* Auth section for mobile */}
+            {user ? (
+              <>
+                <span className="block text-gray-700 font-semibold px-3 py-2">{user.name}</span>
+                <button
+                  onClick={() => { logout(); setIsMenuOpen(false); }}
+                  className="w-full text-white bg-orange-500 hover:bg-orange-600 px-3 py-2 rounded-md text-base font-medium mt-2"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="block text-gray-700 hover:text-orange-500 px-3 py-2 text-base font-medium" onClick={() => setIsMenuOpen(false)}>Login</Link>
+                <Link to="/register" className="block text-gray-700 hover:text-orange-500 px-3 py-2 text-base font-medium" onClick={() => setIsMenuOpen(false)}>Register</Link>
+              </>
+            )}
           </div>
         </div>
       )}
