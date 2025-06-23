@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL:  'https://evnt-mng.onrender.com',
+  baseURL:  'https://milanmanch.com/',
     // baseURL: 'http://localhost:5000',
     headers: {
         'Content-Type': 'application/json',
