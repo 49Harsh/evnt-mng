@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EventMaster - Professional Event Management",
+  title: "MilanManch Celebration - Professional Event Management",
   description:
     "Your trusted partner in creating extraordinary events that leave lasting impressions",
 };
@@ -28,6 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="icon" href="/logo-mm.gif" type="image/gif" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
