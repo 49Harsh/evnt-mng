@@ -3,13 +3,11 @@ const router = express.Router();
 const Contact = require('../models/Contact');
 const { authenticate } = require('../middleware/auth');
 
-// POST /api/contact - only for authenticated users
-router.post('/', authenticate, async (req, res) => {
+// POST /api/contact - public (no authentication required)
+router.post('/', async (req, res) => {
   try {
-    const userId = req.user.userId; // always present if authenticated
     const contact = new Contact({
-      ...req.body,
-      user: userId
+      ...req.body
     });
     await contact.save();
     res.status(201).json({ message: 'Message sent successfully', contact });

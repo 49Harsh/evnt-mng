@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await axiosInstance.post('/api/auth/login', {
+      const response = await axiosInstance.post('/auth/login', {
         email,
         password,
       });
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const register = async (userData: FormData) => {
     try {
-      const response = await axiosInstance.post('/api/auth/register', userData);
+      const response = await axiosInstance.post('/auth/register', userData);
       const data = response.data;
       if (!response.status || response.status >= 400) {
         throw new Error(data.message);
@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const updateProfile = async (userData: FormData) => {
     try {
-      const response = await axiosInstance.put('/api/users/profile', userData, {
+      const response = await axiosInstance.put('/users/profile', userData, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -103,7 +103,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const deleteAccount = async () => {
     try {
-      const response = await axiosInstance.delete('/api/users', {
+      const response = await axiosInstance.delete('/users', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

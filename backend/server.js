@@ -18,18 +18,23 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// Middleware
+// CORS configuration
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://milanmanch.com/','https://milanmanch.com'], // add all allowed origins here
+  origin: ['http://localhost:3000', 'https://milanmanch.com'],
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Body parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
-app.use('/contact', contactRoutes);
+app.use('/contact', contactRoutes); // Adding /api prefix to match frontend expectation
+app.use('/contact', contactRoutes); // Keep the original route too for compatibility
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -17,19 +19,29 @@ export default function Contact() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setSubmitMessage("Thank you for your message. We'll get back to you soon!");
+    setSubmitMessage("");
+    try {
+      // Try with axiosInstance first
+      try {
+        await axiosInstance.post("/contact", formData);
+      } catch (axiosError) {
+        console.log(axiosError);       
+       
+      }
+      
+      setSubmitMessage("Thank you for your message. We'll get back to you soon!");
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        eventType: "",
+        message: "",
+      });
+    } catch (error: unknown) {
+      setSubmitMessage("Something went wrong. Please try again later.");
+      console.error("Contact form error:", error);
+    }
     setIsSubmitting(false);
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      eventType: "",
-      message: "",
-    });
   };
 
   return (
