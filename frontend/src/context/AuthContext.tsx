@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setToken(data.token);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-    } catch (error: any) {
+    } catch (error: unknown) {
       throw error;
     }
   };
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setToken(data.token);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-    } catch (error: any) {
+    } catch (error: unknown) {
       throw error;
     }
   };
@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
       setUser(data);
       localStorage.setItem('user', JSON.stringify(data));
-    } catch (error: any) {
+    } catch (error: unknown) {
       throw error;
     }
   };
@@ -113,7 +113,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         throw new Error(data.message);
       }
       logout();
-    } catch (error: any) {
+    } catch (error: unknown) {
       throw error;
     }
   };
