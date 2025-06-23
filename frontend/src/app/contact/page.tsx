@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import axios from "axios";
 import axiosInstance from "@/api/axiosInstance";
 
 export default function Contact() {
