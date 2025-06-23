@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'cinzel-decorative': ['var(--font-cinzel-decorative)'],
+      },
       colors: {
         'primary': {
           DEFAULT: '#6D28D9', // purple-600

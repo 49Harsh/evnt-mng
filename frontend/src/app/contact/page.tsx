@@ -1,7 +1,10 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import axiosInstance from "@/api/axiosInstance";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -11,9 +14,42 @@ export default function Contact() {
     eventType: "",
     message: "",
   });
+  
+  const { user, loading } = useAuth();
+  const router = useRouter();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
+
+  useEffect(() => {
+    // Check if user is authenticated after loading completes
+    if (!loading && !user) {
+      toast.error("Please login to contact us", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      router.push("/login");
+    }
+  }, [user, loading, router]);
+
+  // If still loading or user not authenticated, show a loading state
+  if (loading) {
+    return (
+      <div className="flex flex-col min-h-screen items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
+        <p className="mt-4 text-gray-600">Loading...</p>
+      </div>
+    );
+  }
+
+  // If not authenticated, don't render the form at all (will be redirected by useEffect)
+  if (!user) {
+    return null;
+  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -28,6 +64,7 @@ export default function Contact() {
        
       }
       
+      toast.success("Thank you for your message. We'll get back to you soon!");
       setSubmitMessage("Thank you for your message. We'll get back to you soon!");
       setFormData({
         name: "",
@@ -37,6 +74,7 @@ export default function Contact() {
         message: "",
       });
     } catch (error: unknown) {
+      toast.error("Something went wrong. Please try again later.");
       setSubmitMessage("Something went wrong. Please try again later.");
       console.error("Contact form error:", error);
     }
@@ -165,7 +203,7 @@ export default function Contact() {
                   <div>
                     <h3 className="font-semibold mb-2">Address</h3>
                     <p className="text-gray-600">A12 Bansal Complex, 100 ft. hindi sansthan road, Near Khandari Crossing, </p>
-                    <p className="text-gray-600">Khandari, Agra - 282005</p>
+                    <p className="text-gray-600">Khandari, Agra - 282005</p>
                   </div>
                   <div>
                     <h3 className="font-semibold mb-2">Phone</h3>

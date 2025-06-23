@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Home(): ReactElement {
   const textData = useMemo(() => [
-    "Welcome to Milan Manch Celebration",
+    "Welcome to Milan Manch",
     "Crafting moments, Creating Memories - Your Event, Our Expertise!",
     "Memorable Events Start with us.",
     "Host Event that matters"
@@ -112,7 +112,7 @@ export default function Home(): ReactElement {
         <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight min-h-[200px] flex items-center justify-center">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-red-500 to-pink-500">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-yellow-200 to-yellow-400">
                 {displayText}
                 <span className="animate-pulse">|</span>
               </span>
