@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
+import axiosInstance from "@/api/axiosInstance";
 
 interface User {
   id: string;
@@ -42,47 +43,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+      const response = await axiosInstance.post('/api/auth/login', {
+        email,
+        password,
       });
-
-      const data = await response.json();
-      
-      if (!response.ok) {
+      const data = response.data;
+      if (!response.status || response.status >= 400) {
         throw new Error(data.message);
       }
-
       setUser(data.user);
       setToken(data.token);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   };
 
   const register = async (userData: FormData) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
-        method: 'POST',
-        body: userData,
-      });
-
-      const data = await response.json();
-      
-      if (!response.ok) {
+      const response = await axiosInstance.post('/api/auth/register', userData);
+      const data = response.data;
+      if (!response.status || response.status >= 400) {
         throw new Error(data.message);
       }
-
       setUser(data.user);
       setToken(data.token);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   };
@@ -96,43 +85,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const updateProfile = async (userData: FormData) => {
     try {
-      const response = await fetch('http://localhost:5000/api/users/profile', {
-        method: 'PUT',
+      const response = await axiosInstance.put('/api/users/profile', userData, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
-        body: userData,
       });
-
-      const data = await response.json();
-      
-      if (!response.ok) {
+      const data = response.data;
+      if (!response.status || response.status >= 400) {
         throw new Error(data.message);
       }
-
       setUser(data);
       localStorage.setItem('user', JSON.stringify(data));
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   };
 
   const deleteAccount = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/users', {
-        method: 'DELETE',
+      const response = await axiosInstance.delete('/api/users', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
-
-      if (!response.ok) {
-        const data = await response.json();
+      if (!response.status || response.status >= 400) {
+        const data = response.data;
         throw new Error(data.message);
       }
-
       logout();
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   };

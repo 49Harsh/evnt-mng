@@ -19,7 +19,10 @@ cloudinary.config({
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://milanmanch.com/','https://milanmanch.com'], // add all allowed origins here
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
