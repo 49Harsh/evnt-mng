@@ -63,12 +63,28 @@ const Navbar = () => {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`text-white hover:text-[#e7c47b] px-3 py-2 text-sm font-medium transition-colors duration-200 
-                      ${isActive 
-                        ? 'border-b-2 border-[#e7c47b]' 
-                        : 'hover:border-b-2 hover:border-[#e7c47b]'}`}
+                    className={`text-white hover:text-[#e7c47b] px-3 py-2 text-sm font-medium transition-colors duration-200 relative
+                      ${isActive ? 'text-[#e7c47b]' : ''}`}
                   >
-                    {item.name}
+                    <span className="relative">
+                      {item.name}
+                      <span 
+                        className={`absolute left-0 bottom-[-4px] h-[2px] bg-[#e7c47b] transition-all duration-300 ease-out
+                          ${isActive 
+                            ? 'w-full' 
+                            : 'w-0 group-hover:w-full'}`}
+                        style={{
+                          transform: isActive ? 'scaleX(1)' : 'scaleX(0)',
+                          transformOrigin: 'left',
+                        }}
+                      />
+                    </span>
+                    <style jsx>{`
+                      .relative:hover span {
+                        transform: scaleX(1) !important;
+                        width: 100%;
+                      }
+                    `}</style>
                   </Link>
                 );
               })}
@@ -122,12 +138,25 @@ const Navbar = () => {
               <>
                 <Link
                   href="/login"
-                  className={`text-white hover:text-[#e7c47b] px-3 py-2 text-sm font-medium transition-colors duration-200
-                    ${pathname === '/login' 
-                      ? 'border-b-2 border-[#e7c47b]' 
-                      : 'hover:border-b-2 hover:border-[#e7c47b]'}`}
+                  className="relative text-white hover:text-[#e7c47b] px-3 py-2 text-sm font-medium transition-colors duration-200"
                 >
-                  Login
+                  <span className="relative">
+                    Login
+                    <span 
+                      className={`absolute left-0 bottom-[-4px] h-[2px] bg-[#e7c47b] transition-all duration-300 ease-out
+                        ${pathname === '/login' ? 'w-full' : 'w-0'}`}
+                      style={{
+                        transform: pathname === '/login' ? 'scaleX(1)' : 'scaleX(0)',
+                        transformOrigin: 'left',
+                      }}
+                    />
+                  </span>
+                  <style jsx>{`
+                    .relative:hover span {
+                      transform: scaleX(1) !important;
+                      width: 100%;
+                    }
+                  `}</style>
                 </Link>
                 <Link
                   href="/register"
@@ -167,13 +196,27 @@ const Navbar = () => {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`text-white hover:text-[#e7c47b] block px-3 py-2 text-base font-medium
-                    ${isActive 
-                      ? 'border-l-4 border-[#e7c47b] pl-2' 
-                      : 'hover:border-l-4 hover:border-[#e7c47b] hover:pl-2'}`}
+                  className={`text-white hover:text-[#e7c47b] block px-3 py-2 text-base font-medium relative
+                    ${isActive ? 'text-[#e7c47b]' : ''}`}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {item.name}
+                  <span className="relative">
+                    {item.name}
+                    <span 
+                      className={`absolute left-0 bottom-[-4px] h-[2px] bg-[#e7c47b] transition-all duration-300 ease-out
+                        ${isActive ? 'w-full' : 'w-0'}`}
+                      style={{
+                        transform: isActive ? 'scaleX(1)' : 'scaleX(0)',
+                        transformOrigin: 'left',
+                      }}
+                    />
+                  </span>
+                  <style jsx>{`
+                    .relative:hover span {
+                      transform: scaleX(1) !important;
+                      width: 100%;
+                    }
+                  `}</style>
                 </Link>
               );
             })}
@@ -181,17 +224,31 @@ const Navbar = () => {
               <>
                 <Link
                   href="/profile"
-                  className={`text-white hover:text-[#e7c47b] block px-3 py-2 text-base font-medium
-                    ${pathname === '/profile' 
-                      ? 'border-l-4 border-[#e7c47b] pl-2' 
-                      : 'hover:border-l-4 hover:border-[#e7c47b] hover:pl-2'}`}
+                  className={`text-white hover:text-[#e7c47b] block px-3 py-2 text-base font-medium relative
+                    ${pathname === '/profile' ? 'text-[#e7c47b]' : ''}`}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Profile
+                  <span className="relative">
+                    Profile
+                    <span 
+                      className={`absolute left-0 bottom-[-4px] h-[2px] bg-[#e7c47b] transition-all duration-300 ease-out
+                        ${pathname === '/profile' ? 'w-full' : 'w-0'}`}
+                      style={{
+                        transform: pathname === '/profile' ? 'scaleX(1)' : 'scaleX(0)',
+                        transformOrigin: 'left',
+                      }}
+                    />
+                  </span>
+                  <style jsx>{`
+                    .relative:hover span {
+                      transform: scaleX(1) !important;
+                      width: 100%;
+                    }
+                  `}</style>
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left text-white hover:text-[#e7c47b] block px-3 py-2 text-base font-medium hover:border-l-4 hover:border-[#e7c47b] hover:pl-2"
+                  className="w-full text-left text-white hover:text-[#e7c47b] block px-3 py-2 text-base font-medium"
                 >
                   Logout
                 </button>
@@ -200,13 +257,27 @@ const Navbar = () => {
               <>
                 <Link
                   href="/login"
-                  className={`text-white hover:text-[#e7c47b] block px-3 py-2 text-base font-medium
-                    ${pathname === '/login' 
-                      ? 'border-l-4 border-[#e7c47b] pl-2' 
-                      : 'hover:border-l-4 hover:border-[#e7c47b] hover:pl-2'}`}
+                  className={`text-white hover:text-[#e7c47b] block px-3 py-2 text-base font-medium relative
+                    ${pathname === '/login' ? 'text-[#e7c47b]' : ''}`}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Login
+                  <span className="relative">
+                    Login
+                    <span 
+                      className={`absolute left-0 bottom-[-4px] h-[2px] bg-[#e7c47b] transition-all duration-300 ease-out
+                        ${pathname === '/login' ? 'w-full' : 'w-0'}`}
+                      style={{
+                        transform: pathname === '/login' ? 'scaleX(1)' : 'scaleX(0)',
+                        transformOrigin: 'left',
+                      }}
+                    />
+                  </span>
+                  <style jsx>{`
+                    .relative:hover span {
+                      transform: scaleX(1) !important;
+                      width: 100%;
+                    }
+                  `}</style>
                 </Link>
                 <Link
                   href="/register"
