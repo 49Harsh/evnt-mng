@@ -27,9 +27,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/contact', contactRoutes);
+app.use('/auth', authRoutes);
+app.use('/users', userRoutes);
+app.use('/contact', contactRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
