@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import axiosInstance from "@/api/axiosInstance";
-import Link from "next/link";
 import Image from "next/image";
 
 // Define user type interface
@@ -33,6 +32,8 @@ export default function ProfilePage() {
     zipCode: "",
     profileImage: "",
   });
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -144,7 +145,7 @@ export default function ProfilePage() {
       
       // Add all form fields to FormData
       Object.entries(form).forEach(([key, value]) => {
-        if (value && key !== 'profileImage') formData.append(key, value);
+        if (value && key !== 'profileImage') formData.append(key, value.toString());
       });
       
       // Add image if a new one was selected
@@ -185,6 +186,43 @@ export default function ProfilePage() {
     } catch (error) {
       console.error('Profile update error:', error);
       setError("Failed to update profile");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess("");
+    
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+    
+    if (newPassword.length < 6) {
+      setError("Password must be at least 6 characters long");
+      setLoading(false);
+      return;
+    }
+    
+    try {
+      // Send only the password field to ensure proper handling
+      await axiosInstance.put(
+        "/users/profile",
+        { password: newPassword },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      setSuccess("Password changed successfully");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      console.error('Password change error:', error);
+      setError("Failed to change password");
     } finally {
       setLoading(false);
     }
@@ -379,16 +417,42 @@ export default function ProfilePage() {
 
       <hr className="my-8 border-gray-200" />
       
-      {/* Forgot Password Link */}
-      <div className="mt-6 text-center">
-        <p className="text-gray-600 mb-2">Need to reset your password?</p>
-        <Link 
-          href="/login" 
-          className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded transition-colors"
+      {/* Password Change Form */}
+      <form onSubmit={handlePasswordChange} className="space-y-4">
+        <h3 className="text-lg font-semibold mb-4 text-gray-800">Change Password</h3>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+          <input 
+            type="password" 
+            value={newPassword} 
+            onChange={e => setNewPassword(e.target.value)} 
+            className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter new password"
+            minLength={6}
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+          <input 
+            type="password" 
+            value={confirmPassword} 
+            onChange={e => setConfirmPassword(e.target.value)} 
+            className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Confirm new password"
+            minLength={6}
+          />
+        </div>
+        
+        <button 
+          type="submit" 
+          disabled={loading || !newPassword || !confirmPassword} 
+          className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-2 rounded transition-colors"
         >
-          Forgot Password
-        </Link>
-      </div>
+          {loading ? 'Changing...' : 'Change Password'}
+        </button>
+      </form>
     </div>
   );
 }

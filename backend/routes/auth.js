@@ -132,4 +132,43 @@ router.post('/forgot-password', async (req, res) => {
   }
 });
 
+// Verify email exists (for password reset)
+router.post('/verify-email', async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    // Check if user exists
+    const user = await User.findOne({ email });
+    
+    // For security reasons, we don't want to expose whether an email exists or not
+    // But for our direct reset flow, we'll return this information
+    res.json({ exists: !!user });
+  } catch (error) {
+    console.error('Email verification error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Reset password (direct reset without token for simplicity)
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+    
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    // Update password
+    user.password = newPassword;
+    await user.save(); // This will trigger the password hashing hook
+    
+    res.json({ message: 'Password reset successful' });
+  } catch (error) {
+    console.error('Password reset error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router;

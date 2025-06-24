@@ -14,7 +14,7 @@ interface User {
   city?: string;
   state?: string;
   zipCode?: string;
-  [key: string]: any; // To accommodate any other fields
+  [key: string]: string | undefined; // To accommodate any other string fields
 }
 
 interface AuthContextType {
@@ -24,7 +24,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (userData: FormData) => Promise<void>;
   logout: () => void;
-  updateProfile: (userData: FormData | Record<string, any>) => Promise<void>;
+  updateProfile: (userData: FormData | Record<string, string | Blob>) => Promise<void>;
   deleteAccount: () => Promise<void>;
 }
 
@@ -113,7 +113,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem('user');
   };
 
-  const updateProfile = async (userData: FormData | Record<string, any>) => {
+  const updateProfile = async (userData: FormData | Record<string, string | Blob>) => {
     try {
       // Prepare headers
       const headers: Record<string, string> = {
@@ -135,7 +135,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       // This ensures we don't lose any fields that weren't returned in the response
       const mergedUser = { ...user, ...updatedUser };
       
-      setUser(mergedUser);
+      setUser(mergedUser as User);
       localStorage.setItem('user', JSON.stringify(mergedUser));
       
       return;
