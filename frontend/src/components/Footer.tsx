@@ -16,10 +16,30 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4 text-white">Quick Links</h4>
             <ul className="space-y-2">
-              <li><Link href="/" className="text-white hover:text-gray-300 transition-colors">Home</Link></li>
-              <li><Link href="/about" className="text-white hover:text-gray-300 transition-colors">About</Link></li>
-              <li><Link href="/services" className="text-white hover:text-gray-300 transition-colors">Services</Link></li>
-              <li><Link href="/contact" className="text-white hover:text-gray-300 transition-colors">Contact</Link></li>
+              <li>
+                <Link href="/" className="group text-white relative transition-colors hover:text-[#e7c47b] duration-200">
+                  Home
+                  <span className="block absolute left-0 -bottom-1 h-[2px] bg-[#e7c47b] transition-all duration-300 scale-x-0 group-hover:scale-x-100 w-full origin-left"></span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="group hover:text-[#e7c47b] text-white relative transition-colors duration-200">
+                  About
+                  <span className="block absolute left-0 -bottom-1 h-[2px] bg-[#e7c47b] transition-all duration-300 scale-x-0 group-hover:scale-x-100 w-full origin-left"></span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="group hover:text-[#e7c47b] text-white relative transition-colors duration-200">
+                  Services
+                  <span className="block absolute left-0 -bottom-1 h-[2px] bg-[#e7c47b] transition-all duration-300 scale-x-0 group-hover:scale-x-100 w-full origin-left"></span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="group hover:text-[#e7c47b] text-white relative transition-colors duration-200">
+                  Contact
+                  <span className="block absolute left-0 -bottom-1 h-[2px] bg-[#e7c47b] transition-all duration-300 scale-x-0 group-hover:scale-x-100 w-full origin-left"></span>
+                </Link>
+              </li>
             </ul>
           </div>
           

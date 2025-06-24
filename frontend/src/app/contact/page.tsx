@@ -40,7 +40,7 @@ export default function Contact() {
   if (loading) {
     return (
       <div className="flex flex-col min-h-screen items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 bg-[#e7c47b]"></div>
         <p className="mt-4 text-gray-600">Loading...</p>
       </div>
     );
@@ -84,7 +84,7 @@ export default function Contact() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 bg-purple-600">
+      <section className="relative py-20 bg-[#b6810c]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center text-white">
             <h1 className="text-4xl sm:text-5xl font-bold mb-6">Contact Us</h1>
@@ -188,7 +188,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-purple-600 text-white py-3 px-6 rounded hover:bg-purple-700 transition-colors disabled:bg-purple-400"
+                  className="w-full bg-[#b6810c] text-white py-3 px-6 rounded hover:bg-[#8a620a] transition-colors disabled:bg-purple-400"
                 >
                   {isSubmitting ? "Sending..." : "Send Message"}
                 </button>
@@ -201,14 +201,18 @@ export default function Contact() {
                 <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="font-semibold mb-2">Address</h3>
+                    <h3 className="font-semibold mb-2">Head Office</h3>
+                    <p className="text-gray-600">A-261 F/F, KH.NO-302, A-BLOCK, MEET NAGAR, SABOLI DELHI -110094</p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-2">Corporate Office</h3>
                     <p className="text-gray-600">A12 Bansal Complex, 100 ft. hindi sansthan road, Near Khandari Crossing, </p>
                     <p className="text-gray-600">Khandari, Agra - 282005</p>
                   </div>
-                  <div>
+                  {/* <div>
                     <h3 className="font-semibold mb-2">Phone</h3>
                     <p className="text-gray-600">+91 6396429825</p>
-                  </div>
+                  </div> */}
                   <div>
                     <h3 className="font-semibold mb-2">Email</h3>
                     <p className="text-gray-600">manchmilan@gmail.com</p>
@@ -223,8 +227,18 @@ export default function Contact() {
               </div>
 
               {/* Map Placeholder */}
-              <div className="bg-gray-200 h-[300px] rounded-lg flex items-center justify-center text-gray-400">
-                Map Placeholder
+              <div className="bg-gray-200 h-[300px] rounded-lg flex items-center justify-center text-gray-400 overflow-hidden">
+                <iframe
+                  title="Bansal Complex Map"
+                  src="https://www.google.com/maps?q=Bansal+Complex,+100+ft,+Kendriya+Hindi+Sansthan+Rd,+Khandari,+Agra,+Uttar+Pradesh+282005&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full h-full rounded-lg"
+                ></iframe>
               </div>
             </div>
           </div>
