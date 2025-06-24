@@ -1,12 +1,24 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import axiosInstance from "@/api/axiosInstance";
 
+// Define user type interface
+interface UserProfile {
+  name?: string;
+  email?: string;
+  phone?: string;
+  whatsappNumber?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  profileImage?: string;
+}
+
 export default function ProfilePage() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -18,27 +30,26 @@ export default function ProfilePage() {
     zipCode: "",
     profileImage: "",
   });
-  const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const router = useRouter();
 
   useEffect(() => {
     if (user) {
+      const userProfile = user as UserProfile;
       setForm({
-        name: user.name || "",
-        email: user.email || "",
-        phone: (user as any).phone || "",
-        whatsappNumber: (user as any).whatsappNumber || "",
-        address: (user as any).address || "",
-        city: (user as any).city || "",
-        state: (user as any).state || "",
-        zipCode: (user as any).zipCode || "",
-        profileImage: user.profileImage || "",
+        name: userProfile.name || "",
+        email: userProfile.email || "",
+        phone: userProfile.phone || "",
+        whatsappNumber: userProfile.whatsappNumber || "",
+        address: userProfile.address || "",
+        city: userProfile.city || "",
+        state: userProfile.state || "",
+        zipCode: userProfile.zipCode || "",
+        profileImage: userProfile.profileImage || "",
       });
     }
   }, [user]);
@@ -58,16 +69,17 @@ export default function ProfilePage() {
     setEditMode(false);
     // Reset form to original user data
     if (user) {
+      const userProfile = user as UserProfile;
       setForm({
-        name: user.name || "",
-        email: user.email || "",
-        phone: (user as any).phone || "",
-        whatsappNumber: (user as any).whatsappNumber || "",
-        address: (user as any).address || "",
-        city: (user as any).city || "",
-        state: (user as any).state || "",
-        zipCode: (user as any).zipCode || "",
-        profileImage: user.profileImage || "",
+        name: userProfile.name || "",
+        email: userProfile.email || "",
+        phone: userProfile.phone || "",
+        whatsappNumber: userProfile.whatsappNumber || "",
+        address: userProfile.address || "",
+        city: userProfile.city || "",
+        state: userProfile.state || "",
+        zipCode: userProfile.zipCode || "",
+        profileImage: userProfile.profileImage || "",
       });
     }
     // Clear messages
@@ -90,7 +102,8 @@ export default function ProfilePage() {
       });
       setSuccess("Profile updated successfully");
       setEditMode(false);
-    } catch (err) {
+    } catch (error) {
+      console.error('Profile update error:', error);
       setError("Failed to update profile");
     } finally {
       setLoading(false);
@@ -124,7 +137,8 @@ export default function ProfilePage() {
       setSuccess("Password changed successfully");
       setNewPassword("");
       setConfirmPassword("");
-    } catch (err) {
+    } catch (error) {
+      console.error('Password change error:', error);
       setError("Failed to change password");
     } finally {
       setLoading(false);
