@@ -4,6 +4,7 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { authenticate } = require('../middleware/auth');
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
 // Multer configuration
 const storage = multer.memoryStorage();
@@ -30,6 +31,16 @@ router.put('/profile', authenticate, upload.single('profileImage'), async (req, 
       return res.status(404).json({ message: 'User not found' });
     }
 
+    // Handle password update separately using the User model's save method
+    // to trigger the password hashing middleware
+    if (req.body.password) {
+      user.password = req.body.password; // This will be hashed by the pre-save hook
+      await user.save();
+      
+      // Remove password from req.body to avoid overwriting it again in the update
+      delete req.body.password;
+    }
+
     // Upload new image if provided
     if (req.file) {
       // Delete old image from Cloudinary if exists
@@ -47,12 +58,18 @@ router.put('/profile', authenticate, upload.single('profileImage'), async (req, 
       req.body.profileImage = result.secure_url;
     }
 
-    // Update user
-    user = await User.findByIdAndUpdate(
-      req.user.userId,
-      { $set: req.body },
-      { new: true }
-    ).select('-password');
+    // Only update other fields if there are any left to update
+    if (Object.keys(req.body).length > 0) {
+      // Update user with remaining fields
+      user = await User.findByIdAndUpdate(
+        req.user.userId,
+        { $set: req.body },
+        { new: true }
+      ).select('-password');
+    } else {
+      // If we only updated the password, still need to return the user
+      user = await User.findById(req.user.userId).select('-password');
+    }
 
     res.json(user);
   } catch (error) {

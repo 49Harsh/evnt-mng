@@ -3,9 +3,12 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import axiosInstance from "@/api/axiosInstance";
+import Link from "next/link";
+import Image from "next/image";
 
 // Define user type interface
 interface UserProfile {
+  id?: string;
   name?: string;
   email?: string;
   phone?: string;
@@ -18,7 +21,7 @@ interface UserProfile {
 }
 
 export default function ProfilePage() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -30,15 +33,46 @@ export default function ProfilePage() {
     zipCode: "",
     profileImage: "",
   });
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
+  // Fetch complete user profile on load
   useEffect(() => {
-    if (user) {
+    const fetchUserProfile = async () => {
+      if (token) {
+        try {
+          const response = await axiosInstance.get('/users/profile', {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          
+          const userProfile = response.data;
+          setForm({
+            name: userProfile.name || "",
+            email: userProfile.email || "",
+            phone: userProfile.phone || "",
+            whatsappNumber: userProfile.whatsappNumber || "",
+            address: userProfile.address || "",
+            city: userProfile.city || "",
+            state: userProfile.state || "",
+            zipCode: userProfile.zipCode || "",
+            profileImage: userProfile.profileImage || "",
+          });
+        } catch (err) {
+          console.error("Error fetching user profile:", err);
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, [token]);
+
+  // Fallback to context user if API call fails
+  useEffect(() => {
+    if (user && !form.name) {
       const userProfile = user as UserProfile;
       setForm({
         name: userProfile.name || "",
@@ -52,10 +86,18 @@ export default function ProfilePage() {
         profileImage: userProfile.profileImage || "",
       });
     }
-  }, [user]);
+  }, [user, form.name]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
   };
 
   const handleEditToggle = () => {
@@ -82,9 +124,11 @@ export default function ProfilePage() {
         profileImage: userProfile.profileImage || "",
       });
     }
-    // Clear messages
+    // Clear messages and image preview
     setError("");
     setSuccess("");
+    setImagePreview(null);
+    setImageFile(null);
   };
 
   const handleProfileUpdate = async (e: React.FormEvent) => {
@@ -96,50 +140,51 @@ export default function ProfilePage() {
     setSuccess("");
     
     try {
-      const formData = { ...form };
+      const formData = new FormData();
+      
+      // Add all form fields to FormData
+      Object.entries(form).forEach(([key, value]) => {
+        if (value && key !== 'profileImage') formData.append(key, value);
+      });
+      
+      // Add image if a new one was selected
+      if (imageFile) {
+        formData.append('profileImage', imageFile);
+      }
+      
       await axiosInstance.put("/users/profile", formData, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        },
       });
       setSuccess("Profile updated successfully");
       setEditMode(false);
+      
+      // Refresh user data
+      const response = await axiosInstance.get('/users/profile', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      const userProfile = response.data;
+      setForm({
+        name: userProfile.name || "",
+        email: userProfile.email || "",
+        phone: userProfile.phone || "",
+        whatsappNumber: userProfile.whatsappNumber || "",
+        address: userProfile.address || "",
+        city: userProfile.city || "",
+        state: userProfile.state || "",
+        zipCode: userProfile.zipCode || "",
+        profileImage: userProfile.profileImage || "",
+      });
+      
+      // Clear image preview
+      setImagePreview(null);
+      setImageFile(null);
     } catch (error) {
       console.error('Profile update error:', error);
       setError("Failed to update profile");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handlePasswordChange = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-    setSuccess("");
-    
-    if (newPassword !== confirmPassword) {
-      setError("Passwords do not match");
-      setLoading(false);
-      return;
-    }
-    
-    if (newPassword.length < 6) {
-      setError("Password must be at least 6 characters long");
-      setLoading(false);
-      return;
-    }
-    
-    try {
-      await axiosInstance.put(
-        "/users/profile",
-        { password: newPassword },
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-      );
-      setSuccess("Password changed successfully");
-      setNewPassword("");
-      setConfirmPassword("");
-    } catch (error) {
-      console.error('Password change error:', error);
-      setError("Failed to change password");
     } finally {
       setLoading(false);
     }
@@ -162,6 +207,41 @@ export default function ProfilePage() {
           {success}
         </div>
       )}
+
+      {/* Profile Image */}
+      <div className="mb-8 flex flex-col items-center">
+        <div className="w-32 h-32 rounded-full overflow-hidden mb-4 bg-gray-100 flex items-center justify-center border">
+          {(imagePreview || form.profileImage) ? (
+            <Image 
+              src={imagePreview || form.profileImage || ''} 
+              alt="Profile" 
+              width={128} 
+              height={128} 
+              className="object-cover w-full h-full"
+              unoptimized={!!imagePreview} // Unoptimized for local previews
+            />
+          ) : (
+            <div className="text-gray-400 text-6xl">👤</div>
+          )}
+        </div>
+        
+        {editMode && (
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Profile Image</label>
+            <input 
+              type="file" 
+              accept="image/*"
+              onChange={handleImageChange}
+              className="block w-full text-sm text-gray-500
+                file:mr-4 file:py-2 file:px-4
+                file:rounded file:border-0
+                file:text-sm file:font-semibold
+                file:bg-orange-50 file:text-orange-700
+                hover:file:bg-orange-100"
+            />
+          </div>
+        )}
+      </div>
 
       <form onSubmit={handleProfileUpdate} className="space-y-4">
         <div>
@@ -299,41 +379,16 @@ export default function ProfilePage() {
 
       <hr className="my-8 border-gray-200" />
       
-      <form onSubmit={handlePasswordChange} className="space-y-4">
-        <h3 className="text-lg font-semibold mb-4 text-gray-800">Change Password</h3>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-          <input 
-            type="password" 
-            value={newPassword} 
-            onChange={e => setNewPassword(e.target.value)} 
-            className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter new password"
-            minLength={6}
-          />
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
-          <input 
-            type="password" 
-            value={confirmPassword} 
-            onChange={e => setConfirmPassword(e.target.value)} 
-            className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Confirm new password"
-            minLength={6}
-          />
-        </div>
-        
-        <button 
-          type="submit" 
-          disabled={loading || !newPassword || !confirmPassword} 
-          className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-2 rounded transition-colors"
+      {/* Forgot Password Link */}
+      <div className="mt-6 text-center">
+        <p className="text-gray-600 mb-2">Need to reset your password?</p>
+        <Link 
+          href="/login" 
+          className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded transition-colors"
         >
-          {loading ? 'Changing...' : 'Change Password'}
-        </button>
-      </form>
+          Forgot Password
+        </Link>
+      </div>
     </div>
   );
 }

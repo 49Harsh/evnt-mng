@@ -8,6 +8,13 @@ interface User {
   name: string;
   email: string;
   profileImage: string;
+  phone?: string;
+  whatsappNumber?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  [key: string]: any; // To accommodate any other fields
 }
 
 interface AuthContextType {
@@ -17,7 +24,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (userData: FormData) => Promise<void>;
   logout: () => void;
-  updateProfile: (userData: FormData) => Promise<void>;
+  updateProfile: (userData: FormData | Record<string, any>) => Promise<void>;
   deleteAccount: () => Promise<void>;
 }
 
@@ -36,6 +43,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (savedToken && savedUser) {
       setToken(savedToken);
       setUser(JSON.parse(savedUser));
+      
+      // Optional: Fetch fresh user data from API
+      const fetchUserData = async () => {
+        try {
+          const response = await axiosInstance.get('/users/profile', {
+            headers: { Authorization: `Bearer ${savedToken}` }
+          });
+          const userData = response.data;
+          setUser(userData);
+          localStorage.setItem('user', JSON.stringify(userData));
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      };
+      
+      fetchUserData();
     }
     
     setLoading(false);
@@ -55,6 +78,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setToken(data.token);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
+      
+      // Get full user profile
+      const profileResponse = await axiosInstance.get('/users/profile', {
+        headers: { Authorization: `Bearer ${data.token}` }
+      });
+      setUser(profileResponse.data);
+      localStorage.setItem('user', JSON.stringify(profileResponse.data));
     } catch (error: unknown) {
       throw error;
     }
@@ -83,19 +113,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem('user');
   };
 
-  const updateProfile = async (userData: FormData) => {
+  const updateProfile = async (userData: FormData | Record<string, any>) => {
     try {
-      const response = await axiosInstance.put('/users/profile', userData, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-      const data = response.data;
-      if (!response.status || response.status >= 400) {
-        throw new Error(data.message);
+      // Prepare headers
+      const headers: Record<string, string> = {
+        'Authorization': `Bearer ${token}`
+      };
+      
+      let response;
+      
+      // Check if userData is FormData or a regular object
+      if (userData instanceof FormData) {
+        response = await axiosInstance.put('/users/profile', userData, { headers });
+      } else {
+        response = await axiosInstance.put('/users/profile', userData, { headers });
       }
-      setUser(data);
-      localStorage.setItem('user', JSON.stringify(data));
+      
+      const updatedUser = response.data;
+      
+      // Merge the updated user data with the existing user data
+      // This ensures we don't lose any fields that weren't returned in the response
+      const mergedUser = { ...user, ...updatedUser };
+      
+      setUser(mergedUser);
+      localStorage.setItem('user', JSON.stringify(mergedUser));
+      
+      return;
     } catch (error: unknown) {
       throw error;
     }

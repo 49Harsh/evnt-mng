@@ -70,12 +70,14 @@ router.post('/login', async (req, res) => {
     // Check if user exists
     const user = await User.findOne({ email });
     if (!user) {
+      console.log('Login failed: User not found');
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     // Verify password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
+      console.log('Login failed: Password mismatch');
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
@@ -86,18 +88,47 @@ router.post('/login', async (req, res) => {
       { expiresIn: '24h' }
     );
 
+    // Return more user fields in the response
     res.json({
       token,
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
+        whatsappNumber: user.whatsappNumber,
+        address: user.address,
+        city: user.city,
+        state: user.state,
+        zipCode: user.zipCode,
         profileImage: user.profileImage
       }
     });
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Forgot password endpoint
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    // Check if user exists
+    const user = await User.findOne({ email });
+    
+    // Always return success even if user doesn't exist for security reasons
+    // In a real implementation, you would send an email with a reset token
+    
+    console.log(`Forgot password request for: ${email}`);
+    
+    // For now, just return success
+    res.json({ message: 'If an account with that email exists, a password reset link has been sent.' });
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    // Still return 200 to not leak user existence
+    res.status(200).json({ message: 'If an account with that email exists, a password reset link has been sent.' });
   }
 });
 
