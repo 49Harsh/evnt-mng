@@ -39,6 +39,30 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <head>
         <link rel="icon" href="/logo-mm.gif" type="image/gif" />
+        {/* SEO and social meta tags */}
+        <meta name="theme-color" content="#FFD700" />
+        <meta name="msapplication-TileColor" content="#FFD700" />
+        <meta
+          property="og:title"
+          content="MilanManch Celebration - Professional Event Management"
+        />
+        <meta
+          property="og:description"
+          content="Your trusted partner in creating extraordinary events that leave lasting impressions"
+        />
+        <meta property="og:image" content="/logo-mm.gif" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.milanmanch.com" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="MilanManch Celebration - Professional Event Management"
+        />
+        <meta
+          name="twitter:description"
+          content="Your trusted partner in creating extraordinary events that leave lasting impressions"
+        />
+        <meta name="twitter:image" content="/logo-mm.gif" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${cinzelDecorative.variable} antialiased`}
