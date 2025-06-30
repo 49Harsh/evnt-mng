@@ -24,7 +24,8 @@ app.use(cors({
     'http://localhost:3000',
     'https://milanmanch.com',
     'http://localhost:5173', // Added Vite dev server
-    'https://event-mng-react.netlify.app/'
+    'https://event-mng-react.netlify.app', // Netlify admin panel
+    'https://event-mng-react.netlify.app/' // Netlify admin panel with trailing slash
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
