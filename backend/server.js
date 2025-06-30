@@ -20,7 +20,11 @@ cloudinary.config({
 
 // CORS configuration
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://milanmanch.com'],
+  origin: [
+    'http://localhost:3000',
+    'https://milanmanch.com',
+    'http://localhost:5173' // Added Vite dev server
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']

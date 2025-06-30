@@ -100,4 +100,14 @@ router.delete('/', authenticate, async (req, res) => {
   }
 });
 
+// GET /users - admin only, get all users (for admin dashboard)
+router.get('/', async (req, res) => {
+  try {
+    const users = await User.find({}, '-password'); // fetch all fields except password
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 module.exports = router;
