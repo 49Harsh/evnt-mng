@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import axiosInstance from '@/api/axiosInstance';
 
 interface EnquiryFormProps {
@@ -110,7 +109,7 @@ const EnquiryForm = ({ serviceType = '', onSuccess, onCancel }: EnquiryFormProps
         whatsappNumber: formData.isSameAsPhone ? formData.phoneNumber : formData.whatsappNumber
       };
 
-      const response = await axiosInstance.post('/api/enquiry', dataToSubmit);
+      await axiosInstance.post('/api/enquiry', dataToSubmit);
       
       setSuccess('Enquiry submitted successfully! We will contact you soon.');
       setFormData({
@@ -131,8 +130,9 @@ const EnquiryForm = ({ serviceType = '', onSuccess, onCancel }: EnquiryFormProps
       if (onSuccess) {
         onSuccess();
       }
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to submit enquiry. Please try again.');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'Failed to submit enquiry. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

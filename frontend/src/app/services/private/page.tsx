@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
 export default function PrivateParties() {
@@ -10,7 +9,7 @@ export default function PrivateParties() {
           <div className="text-center text-white">
             <h1 className="text-4xl sm:text-5xl font-bold mb-6">Private Party Events</h1>
             <p className="text-xl max-w-3xl mx-auto">
-              Creating memorable celebrations for life's special moments
+              Creating memorable celebrations for life&apos;s special moments
             </p>
           </div>
         </div>
@@ -35,7 +34,7 @@ export default function PrivateParties() {
           <div className="prose max-w-none">
             <h2 className="text-3xl font-bold mb-8 text-center">Types of Private Party Events We Organize</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto text-center mb-16">
-              Our team specializes in crafting personalized private events that celebrate life's special moments. 
+              Our team specializes in crafting personalized private events that celebrate life&apos;s special moments. 
               From birthdays and anniversaries to engagement parties and housewarmings, 
               we handle every detail to make your celebration truly memorable.
             </p>
