@@ -54,10 +54,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setUser(userData);
           localStorage.setItem('user', JSON.stringify(userData));
         } catch (error) {
+          // Connection errors shouldn't disrupt the user experience
+          // Just log them without affecting the user's session
           console.error('Error fetching user data:', error);
+          
+          // User can still use the site with locally stored data
+          // We don't need to logout or show an error to the user
         }
       };
       
+      // We can still call fetchUserData, but errors won't affect the user experience
       fetchUserData();
     }
     

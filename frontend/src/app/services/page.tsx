@@ -1,4 +1,71 @@
+'use client';
+
+import Link from 'next/link';
+import { useState } from 'react';
+import EnquiryModal from '@/components/EnquiryModal';
+
 export default function Services() {
+  const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState('');
+
+  const openEnquiryModal = (serviceType: string) => {
+    setSelectedService(serviceType);
+    setIsEnquiryModalOpen(true);
+  };
+  
+  const closeEnquiryModal = () => setIsEnquiryModalOpen(false);
+
+  const services = [
+    {
+      title: "Wedding Planning",
+      description: "From intimate ceremonies to grand celebrations, we handle every detail of your special day.",
+      features: ["Venue Selection", "Vendor Coordination", "Decor & Theme Design", "Timeline Planning"],
+      icon: "👰",
+      link: "/services/wedding",
+      type: "wedding"
+    },
+    {
+      title: "Corporate Events",
+      description: "Professional event management for your business needs and company celebrations.",
+      features: ["Conferences", "Team Building", "Product Launches", "Award Ceremonies"],
+      icon: "💼",
+      link: "/services/corporate",
+      type: "corporate"
+    },
+    {
+      title: "Social Gatherings",
+      description: "Create memorable moments with perfectly planned social events.",
+      features: ["Birthday Parties", "Anniversary Celebrations", "Holiday Parties", "Reunions"],
+      icon: "🎉",
+      link: "/services/social",
+      type: "social"
+    },
+    {
+      title: "Private Parties",
+      description: "Exclusive event planning for your private celebrations and gatherings.",
+      features: ["Dinner Parties", "Cocktail Events", "Garden Parties", "Theme Parties"],
+      icon: "🎊",
+      link: "/services/private",
+      type: "private"
+    },
+    {
+      title: "Cultural Events",
+      description: "Celebrate traditions and cultural occasions with authentic touches.",
+      features: ["Festival Celebrations", "Cultural Ceremonies", "Traditional Events", "Community Gatherings"],
+      icon: "🎭",
+      link: "/services/cultural",
+      type: "cultural"
+    },
+    {
+      title: "Concert & Shows",
+      description: "Technical expertise for entertainment events and performances.",
+      features: ["Live Concerts", "Fashion Shows", "Art Exhibitions", "Theater Productions"],
+      icon: "🎵",
+      link: "/services/concerts",
+      type: "concerts"
+    }
+  ];
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
@@ -17,47 +84,10 @@ export default function Services() {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Wedding Planning",
-                description: "From intimate ceremonies to grand celebrations, we handle every detail of your special day.",
-                features: ["Venue Selection", "Vendor Coordination", "Decor & Theme Design", "Timeline Planning"],
-                icon: "👰"
-              },
-              {
-                title: "Corporate Events",
-                description: "Professional event management for your business needs and company celebrations.",
-                features: ["Conferences", "Team Building", "Product Launches", "Award Ceremonies"],
-                icon: "💼"
-              },
-              {
-                title: "Social Gatherings",
-                description: "Create memorable moments with perfectly planned social events.",
-                features: ["Birthday Parties", "Anniversary Celebrations", "Holiday Parties", "Reunions"],
-                icon: "🎉"
-              },
-              {
-                title: "Private Parties",
-                description: "Exclusive event planning for your private celebrations and gatherings.",
-                features: ["Dinner Parties", "Cocktail Events", "Garden Parties", "Theme Parties"],
-                icon: "🎊"
-              },
-              {
-                title: "Cultural Events",
-                description: "Celebrate traditions and cultural occasions with authentic touches.",
-                features: ["Festival Celebrations", "Cultural Ceremonies", "Traditional Events", "Community Gatherings"],
-                icon: "🎭"
-              },
-              {
-                title: "Concert & Shows",
-                description: "Technical expertise for entertainment events and performances.",
-                features: ["Live Concerts", "Fashion Shows", "Art Exhibitions", "Theater Productions"],
-                icon: "🎵"
-              }
-            ].map((service, index) => (
+            {services.map((service, index) => (
               <div 
                 key={index}
-                className="bg-gray-50 border border-gray-200 p-8 rounded-xl backdrop-blur-sm hover:border-orange-500/50 transition-all duration-300 hover:transform hover:-translate-y-2 group"
+                className="bg-gray-50 border border-gray-200 p-8 rounded-xl backdrop-blur-sm hover:border-orange-500/50 transition-all duration-300 hover:transform hover:-translate-y-2 group cursor-pointer"
               >
                 <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">{service.icon}</div>
                 <h3 className="text-2xl font-semibold mb-4 text-gray-900">{service.title}</h3>
@@ -71,6 +101,20 @@ export default function Services() {
                   ))}
                 </ul>
                 <div className="mt-4 w-full h-1 bg-gradient-to-r from-orange-400 to-red-500 rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="mt-6 flex space-x-3">
+                  <Link 
+                    href={service.link} 
+                    className="flex-1 py-2 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md transition-colors duration-200 font-medium text-center"
+                  >
+                    Learn More
+                  </Link>
+                  <button 
+                    onClick={() => openEnquiryModal(service.type)}
+                    className="flex-1 py-2 px-4 bg-[#b6810c] hover:bg-[#a37105] text-white rounded-md transition-colors duration-200 font-medium"
+                  >
+                    Enquire
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -125,6 +169,13 @@ export default function Services() {
           </div>
         </div>
       </section>
+
+      {/* Enquiry Modal */}
+      <EnquiryModal 
+        isOpen={isEnquiryModalOpen} 
+        onClose={closeEnquiryModal} 
+        serviceType={selectedService}
+      />
     </div>
   );
 }

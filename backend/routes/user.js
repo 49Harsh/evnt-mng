@@ -101,7 +101,7 @@ router.delete('/', authenticate, async (req, res) => {
 });
 
 // GET /users - admin only, get all users (for admin dashboard)
-router.get('/', async (req, res) => {
+router.get('/', authenticate, async (req, res) => {
   try {
     const users = await User.find({}, '-password'); // fetch all fields except password
     res.json(users);

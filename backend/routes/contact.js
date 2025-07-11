@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
 });
 
 // GET /contact - admin only, get all contact messages with user details
-router.get('/', async (req, res) => {
+router.get('/', authenticate, async (req, res) => {
   try {
     // Optionally, check if req.user.isAdmin
     const contacts = await Contact.find().populate('user', 'name email profileImage');
@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
 });
 
 // DELETE /contact/:id - admin only, delete a contact message
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticate, async (req, res) => {
   try {
     const deleted = await Contact.findByIdAndDelete(req.params.id);
     if (!deleted) {

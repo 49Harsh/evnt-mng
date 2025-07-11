@@ -6,6 +6,7 @@ const cloudinary = require('cloudinary').v2;
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const contactRoutes = require('./routes/contact');
+const enquiryRoutes = require('./routes/enquiry');
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/contact', contactRoutes); // Adding /api prefix to match frontend expectation
 app.use('/contact', contactRoutes); // Keep the original route too for compatibility
+app.use('/api/enquiry', enquiryRoutes); // New enquiry route
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
