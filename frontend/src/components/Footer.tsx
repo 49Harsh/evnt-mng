@@ -57,6 +57,9 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4 text-white">Contact Info</h4>
             <ul className="space-y-2 text-white">
               <li>support25@milanmanch.com</li>
+              <li>Head Office:</li>
+              <li>A-261 F/F, KH.NO-302, A-BLOCK, MEET NAGAR, SABOLI DELHI -110094</li>
+              <li>Corporate Office:</li>
               <li>A12 Bansal Complex, Khandari, Agra</li>
             </ul>
           </div>

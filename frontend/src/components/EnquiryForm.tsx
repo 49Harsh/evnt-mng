@@ -81,9 +81,9 @@ const EnquiryForm = ({ serviceType = '', onSuccess, onCancel }: EnquiryFormProps
 
   const fetchAddressFromCoordinates = async (latitude: number, longitude: number) => {
     try {
-      // We use axios directly here since this is an external API call, not to our backend
-      const response = await axios.get(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+      // Use our backend API to avoid CORS issues
+      const response = await axiosInstance.get(
+        `/api/enquiry/reverse-geocode?lat=${latitude}&lon=${longitude}`
       );
       
       if (response.data && response.data.display_name) {

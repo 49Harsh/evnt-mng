@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Enquiry = require('../models/Enquiry');
 const { authenticate } = require('../middleware/auth');
+const axios = require('axios');
 
 // @route   POST api/enquiry
 // @desc    Submit a new enquiry
@@ -52,6 +53,34 @@ router.get('/', authenticate, async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
+  }
+});
+
+// @route   GET api/enquiry/reverse-geocode
+// @desc    Reverse geocoding - get address from coordinates
+// @access  Public
+router.get('/reverse-geocode', async (req, res) => {
+  try {
+    const { lat, lon } = req.query;
+    
+    if (!lat || !lon) {
+      return res.status(400).json({ msg: 'Latitude and longitude are required' });
+    }
+    
+    // Make request to OpenStreetMap Nominatim API
+    const response = await axios.get(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`,
+      {
+        headers: {
+          'User-Agent': 'EventManagementApp/1.0'
+        }
+      }
+    );
+    
+    res.json(response.data);
+  } catch (err) {
+    console.error('Reverse geocoding error:', err.message);
+    res.status(500).json({ msg: 'Error fetching address from coordinates' });
   }
 });
 
@@ -123,4 +152,4 @@ router.delete('/:id', authenticate, async (req, res) => {
   }
 });
 
-module.exports = router; 
+module.exports = router;

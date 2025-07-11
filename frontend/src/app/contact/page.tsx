@@ -215,7 +215,7 @@ export default function Contact() {
                   </div> */}
                   <div>
                     <h3 className="font-semibold mb-2">Email</h3>
-                    <p className="text-gray-600">manchmilan@gmail.com</p>
+                    <p className="text-gray-600">support25@milanmanch.com</p>
                   </div>
                   {/* <div>
                     <h3 className="font-semibold mb-2">Business Hours</h3>
