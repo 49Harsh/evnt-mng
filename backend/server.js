@@ -42,7 +42,7 @@ app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/contact', contactRoutes); // Adding /api prefix to match frontend expectation
 app.use('/contact', contactRoutes); // Keep the original route too for compatibility
-app.use('/api/enquiry', enquiryRoutes); // New enquiry route
+app.use('/enquiry', enquiryRoutes); // New enquiry route
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)

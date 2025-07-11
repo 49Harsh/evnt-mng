@@ -82,7 +82,7 @@ const EnquiryForm = ({ serviceType = '', onSuccess, onCancel }: EnquiryFormProps
     try {
       // Use our backend API to avoid CORS issues
       const response = await axiosInstance.get(
-        `/api/enquiry/reverse-geocode?lat=${latitude}&lon=${longitude}`
+        `/enquiry/reverse-geocode?lat=${latitude}&lon=${longitude}`
       );
       
       if (response.data && response.data.display_name) {
@@ -109,7 +109,7 @@ const EnquiryForm = ({ serviceType = '', onSuccess, onCancel }: EnquiryFormProps
         whatsappNumber: formData.isSameAsPhone ? formData.phoneNumber : formData.whatsappNumber
       };
 
-      await axiosInstance.post('/api/enquiry', dataToSubmit);
+      await axiosInstance.post('/enquiry', dataToSubmit);
       
       setSuccess('Enquiry submitted successfully! We will contact you soon.');
       setFormData({
