@@ -23,7 +23,7 @@ cloudinary.config({
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'https://milanmanch.com',
+    'https://www.milanmanch.com',
     'http://localhost:5173', // Added Vite dev server
     'https://event-mng-react.netlify.app', // Netlify admin panel
     'https://event-mng-react.netlify.app/' // Netlify admin panel with trailing slash
