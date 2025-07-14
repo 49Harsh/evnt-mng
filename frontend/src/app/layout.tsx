@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { AuthProvider } from "@/context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AuthDebuggerWrapper from "@/components/AuthDebuggerWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -85,6 +86,8 @@ export default function RootLayout({
             pauseOnHover
             theme="light"
           />
+          {/* Auth debugger (will only show in development) */}
+          <AuthDebuggerWrapper />
         </AuthProvider>
       </body>
     </html>
