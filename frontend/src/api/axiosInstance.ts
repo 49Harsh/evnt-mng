@@ -5,10 +5,12 @@ const isDevelopment = process.env.NODE_ENV === 'development' ||
                      typeof window !== 'undefined' && 
                      window.location.hostname === 'localhost';
 
-const baseURL = isDevelopment
-  ? "http://localhost:5000"
-  : "https://milanmanch.com/api";
-
+// const baseURL = isDevelopment
+//   ? "http://localhost:5000"
+//   : "https://milanmanch.com/api";
+// const baseURL = "https://localhost:5000"; 
+// For development, you can use localhost directly
+const baseURL = "https://milanmanch.com/api"
 const instance = axios.create({
   baseURL,
   withCredentials: true,

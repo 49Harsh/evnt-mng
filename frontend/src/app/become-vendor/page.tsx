@@ -1,13 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { registerVendor } from '@/api/vendorAPI';
 import ConnectionStatus from '@/components/ConnectionStatus';
 
 export default function BecomeVendor() {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     fullName: '',
     businessName: '',
@@ -462,4 +459,4 @@ export default function BecomeVendor() {
       </div>
     </div>
   );
-} 
+}

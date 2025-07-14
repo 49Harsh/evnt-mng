@@ -33,6 +33,7 @@ const ConnectionStatus: React.FC<Props> = ({ onlyShowOnError = true }) => {
         // Log connection details to console for debugging
         logConnectionDetails();
       } catch (error) {
+        console.error('Connection check failed:', error);
         setStatus({
           isConnected: false,
           message: 'Error checking connection. Please try again.',
@@ -100,4 +101,4 @@ const ConnectionStatus: React.FC<Props> = ({ onlyShowOnError = true }) => {
   );
 };
 
-export default ConnectionStatus; 
+export default ConnectionStatus;

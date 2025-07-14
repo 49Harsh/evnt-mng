@@ -1,5 +1,5 @@
 import axiosInstance from '@/api/axiosInstance';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 
 interface ConnectionStatus {
   isConnected: boolean;
@@ -90,4 +90,4 @@ export const logConnectionDetails = () => {
   }
   
   console.log('==========================');
-}; 
+};

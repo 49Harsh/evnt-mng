@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axiosInstance from "@/api/axiosInstance";
 import axios from 'axios'; // Added missing import for axios.isAxiosError
 
@@ -43,12 +43,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // Check if token is expired
-  const isTokenExpired = (): boolean => {
+  const isTokenExpired = useCallback((): boolean => {
     const expiration = getTokenExpiration();
     if (!expiration) return true;
     // Return true if current time is past expiration (with 5s buffer)
     return Date.now() > expiration - 5000;
-  };
+  }, []); // No dependencies needed as it only uses localStorage
 
   // Set token with expiration
   const setTokenWithExpiration = (newToken: string) => {
@@ -103,7 +103,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
     
     setLoading(false);
-  }, []);
+  }, [isTokenExpired]); // Added isTokenExpired to dependencies
 
   const login = async (email: string, password: string) => {
     try {
