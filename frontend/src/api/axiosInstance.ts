@@ -1,9 +1,9 @@
 import axios from "axios";
 
-// Determine the base URL based on environment
-const isDevelopment = process.env.NODE_ENV === 'development' || 
-                     typeof window !== 'undefined' && 
-                     window.location.hostname === 'localhost';
+// // Determine the base URL based on environment
+// const isDevelopment = process.env.NODE_ENV === 'development' || 
+//                      typeof window !== 'undefined' && 
+//                      window.location.hostname === 'localhost';
 
 // const baseURL = isDevelopment
 //   ? "http://localhost:5000"
