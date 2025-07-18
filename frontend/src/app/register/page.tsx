@@ -25,12 +25,109 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [useSameNumberForWhatsApp, setUseSameNumberForWhatsApp] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
   const { register } = useAuth();
 
+  // Validation functions
+  const validatePhoneNumber = (phone: string): string | null => {
+    if (!phone.trim()) {
+      return 'Phone number is required';
+    }
+
+    // Remove all spaces and special characters except + and digits
+    const cleanPhone = phone.replace(/[^\d+]/g, '');
+
+    // Check for different formats
+    if (cleanPhone.startsWith('+91')) {
+      // +91 format should have 13 digits total
+      if (cleanPhone.length !== 13) {
+        return 'Phone number with +91 should be 13 digits total';
+      }
+    } else if (cleanPhone.startsWith('0')) {
+      // 0 format should have 11 digits total
+      if (cleanPhone.length !== 11) {
+        return 'Phone number starting with 0 should be 11 digits total';
+      }
+    } else {
+      // Regular format should have exactly 10 digits
+      if (cleanPhone.length !== 10 || !/^\d{10}$/.test(cleanPhone)) {
+        return 'Phone number should be exactly 10 digits';
+      }
+    }
+
+    return null;
+  };
+
+  const validateForm = (): boolean => {
+    const errors: { [key: string]: string } = {};
+
+    // Required field validations
+    if (!formData.name.trim()) {
+      errors.name = 'Name is required';
+    }
+
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+
+    // Phone validation
+    const phoneError = validatePhoneNumber(formData.phone);
+    if (phoneError) {
+      errors.phone = phoneError;
+    }
+
+    // WhatsApp number validation
+    const whatsappError = validatePhoneNumber(formData.whatsappNumber);
+    if (whatsappError) {
+      errors.whatsappNumber = whatsappError;
+    }
+
+    if (!formData.password.trim()) {
+      errors.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      errors.password = 'Password must be at least 6 characters long';
+    }
+
+    if (!formData.confirmPassword.trim()) {
+      errors.confirmPassword = 'Please confirm your password';
+    } else if (formData.password !== formData.confirmPassword) {
+      errors.confirmPassword = 'Passwords do not match';
+    }
+
+    if (!formData.address.trim()) {
+      errors.address = 'Address is required';
+    }
+
+    if (!formData.city.trim()) {
+      errors.city = 'City is required';
+    }
+
+    if (!formData.state.trim()) {
+      errors.state = 'State is required';
+    }
+
+    if (!formData.zipCode.trim()) {
+      errors.zipCode = 'ZIP Code is required';
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    
+
+    // Clear validation error for this field when user starts typing
+    if (validationErrors[name]) {
+      setValidationErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+
     // If updating phone number and the checkbox is checked, also update WhatsApp number
     if (name === 'phone' && useSameNumberForWhatsApp) {
       setFormData(prev => ({
@@ -49,7 +146,7 @@ export default function RegisterPage() {
   const handleWhatsAppCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
     setUseSameNumberForWhatsApp(isChecked);
-    
+
     if (isChecked) {
       // Update WhatsApp number to match phone number
       setFormData(prev => ({
@@ -77,9 +174,9 @@ export default function RegisterPage() {
     e.preventDefault();
     setError('');
 
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      toast.error('Passwords do not match');
+    // Validate form before submission
+    if (!validateForm()) {
+      toast.error('Please fix all validation errors before submitting');
       return;
     }
 
@@ -92,7 +189,7 @@ export default function RegisterPage() {
           registerData.append(key, formData[key as keyof typeof formData]);
         }
       });
-      
+
       if (profileImage) {
         registerData.append('profileImage', profileImage);
       }
@@ -132,7 +229,7 @@ export default function RegisterPage() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                Name
+                Name *
               </label>
               <input
                 type="text"
@@ -141,13 +238,17 @@ export default function RegisterPage() {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm ${validationErrors.name ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
+              {validationErrors.name && (
+                <p className="mt-1 text-sm text-red-600">{validationErrors.name}</p>
+              )}
             </div>
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
+                Email *
               </label>
               <input
                 type="email"
@@ -156,13 +257,17 @@ export default function RegisterPage() {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm ${validationErrors.email ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
+              {validationErrors.email && (
+                <p className="mt-1 text-sm text-red-600">{validationErrors.email}</p>
+              )}
             </div>
 
             <div>
               <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                Phone
+                Phone *
               </label>
               <input
                 type="tel"
@@ -171,8 +276,13 @@ export default function RegisterPage() {
                 required
                 value={formData.phone}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                placeholder="10 digits, or 0xxxxxxxxxx, or +91xxxxxxxxxx"
+                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm ${validationErrors.phone ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
+              {validationErrors.phone && (
+                <p className="mt-1 text-sm text-red-600">{validationErrors.phone}</p>
+              )}
               <div className="mt-2">
                 <label className="inline-flex items-center">
                   <input
@@ -190,7 +300,7 @@ export default function RegisterPage() {
 
             <div>
               <label htmlFor="whatsappNumber" className="block text-sm font-medium text-gray-700">
-                WhatsApp Number
+                WhatsApp Number *
               </label>
               <input
                 type="tel"
@@ -200,13 +310,18 @@ export default function RegisterPage() {
                 value={formData.whatsappNumber}
                 onChange={handleChange}
                 disabled={useSameNumberForWhatsApp}
-                className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm ${useSameNumberForWhatsApp ? 'bg-gray-100' : ''}`}
+                placeholder="10 digits, or 0xxxxxxxxxx, or +91xxxxxxxxxx"
+                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm ${validationErrors.whatsappNumber ? 'border-red-500' : 'border-gray-300'
+                  } ${useSameNumberForWhatsApp ? 'bg-gray-100' : ''}`}
               />
+              {validationErrors.whatsappNumber && (
+                <p className="mt-1 text-sm text-red-600">{validationErrors.whatsappNumber}</p>
+              )}
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
+                Password *
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <input
@@ -216,7 +331,8 @@ export default function RegisterPage() {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                  className={`block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm ${validationErrors.password ? 'border-red-500' : 'border-gray-300'
+                    }`}
                 />
                 <button
                   type="button"
@@ -235,11 +351,14 @@ export default function RegisterPage() {
                   )}
                 </button>
               </div>
+              {validationErrors.password && (
+                <p className="mt-1 text-sm text-red-600">{validationErrors.password}</p>
+              )}
             </div>
 
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                Confirm Password
+                Confirm Password *
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <input
@@ -249,7 +368,8 @@ export default function RegisterPage() {
                   required
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                  className={`block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm ${validationErrors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                    }`}
                 />
                 <button
                   type="button"
@@ -268,62 +388,85 @@ export default function RegisterPage() {
                   )}
                 </button>
               </div>
+              {validationErrors.confirmPassword && (
+                <p className="mt-1 text-sm text-red-600">{validationErrors.confirmPassword}</p>
+              )}
             </div>
 
             <div>
               <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-                Address
+                Address *
               </label>
               <input
                 type="text"
                 name="address"
                 id="address"
+                required
                 value={formData.address}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm ${validationErrors.address ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
+              {validationErrors.address && (
+                <p className="mt-1 text-sm text-red-600">{validationErrors.address}</p>
+              )}
             </div>
 
             <div>
               <label htmlFor="city" className="block text-sm font-medium text-gray-700">
-                City
+                City *
               </label>
               <input
                 type="text"
                 name="city"
                 id="city"
+                required
                 value={formData.city}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm ${validationErrors.city ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
+              {validationErrors.city && (
+                <p className="mt-1 text-sm text-red-600">{validationErrors.city}</p>
+              )}
             </div>
 
             <div>
               <label htmlFor="state" className="block text-sm font-medium text-gray-700">
-                State
+                State *
               </label>
               <input
                 type="text"
                 name="state"
                 id="state"
+                required
                 value={formData.state}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm ${validationErrors.state ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
+              {validationErrors.state && (
+                <p className="mt-1 text-sm text-red-600">{validationErrors.state}</p>
+              )}
             </div>
 
             <div>
               <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700">
-                ZIP Code
+                ZIP Code *
               </label>
               <input
                 type="text"
                 name="zipCode"
                 id="zipCode"
+                required
                 value={formData.zipCode}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm ${validationErrors.zipCode ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
+              {validationErrors.zipCode && (
+                <p className="mt-1 text-sm text-red-600">{validationErrors.zipCode}</p>
+              )}
             </div>
 
             <div className="col-span-2">
