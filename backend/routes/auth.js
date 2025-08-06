@@ -101,7 +101,8 @@ router.post('/login', async (req, res) => {
         city: user.city,
         state: user.state,
         zipCode: user.zipCode,
-        profileImage: user.profileImage
+        profileImage: user.profileImage,
+        role: user.role
       }
     });
   } catch (error) {

@@ -47,6 +47,7 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   const mongoStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';

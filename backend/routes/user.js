@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
-const { authenticate } = require('../middleware/auth');
+const { authenticate, requireAdmin } = require('../middleware/auth');
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 
@@ -101,7 +101,7 @@ router.delete('/', authenticate, async (req, res) => {
 });
 
 // GET /users - admin only, get all users (for admin dashboard)
-router.get('/', authenticate, async (req, res) => {
+router.get('/', requireAdmin, async (req, res) => {
   try {
     const users = await User.find({}, '-password'); // fetch all fields except password
     res.json(users);
